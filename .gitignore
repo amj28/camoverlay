@@ -1,0 +1,42 @@
+# Qt build files
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+Makefile
+Makefile.in
+*.moc
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+*.pdb
+*.app
+
+# Qt creator files
+.qtcreator/
+*.creator/
+
+# Build directories
+build/
+*/build/
+
+# CMake build files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CMakeLists.txt.user
+
+# IDEs and editors
+*.idea/
+*.vscode/
+*.kdev4
+*.project
+*.cproject
+
+# Temporary files
+*.swp
+*.bak
+*~
