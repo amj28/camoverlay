@@ -2,7 +2,7 @@
 *.pro.user
 *.pro.user.*
 *.qmake.stash
-Makefile
+Makefile*
 Makefile.in
 *.moc
 *.o
@@ -14,6 +14,10 @@ Makefile.in
 *.exe
 *.pdb
 *.app
+
+camoverlay
+release/*
+debug/*
 
 # Qt creator files
 .qtcreator/
