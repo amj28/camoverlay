@@ -1,11 +1,16 @@
-#include <iostream>
 #include <QApplication>
+#include <QMessageBox>
+#include <QIcon>
 
 #include <QCamera>
+#include <QCameraDevice>
+
 #include <QMediaCaptureSession>
 #include <QMediaDevices>
+
 #include <QVideoWidget>
-#include <QCameraDevice>
+#include <QVideoSink>
+
 
 int main(int argc, char *argv[]) {
 
@@ -13,21 +18,28 @@ int main(int argc, char *argv[]) {
 	QApplication::setApplicationName("CamOverlay");
 
 	
-	QVideoWidget viewfinder;
-	viewfinder.show();
+	QVideoWidget widget;
+	widget.setWindowIcon(QIcon("./video.svg"));
+	// widget.setWindowFlag(Qt::FramelessWindowHint); // removes frame but you cant drag/resize
+	widget.setAttribute(Qt::WA_TranslucentBackground);	
+	widget.show();
 
 	// get default camera
 	QCamera camera(QMediaDevices::defaultVideoInput());
 
 	if (camera.cameraDevice().isNull()) {
-		std::cout << "No camera available!\n";
-		return -1;
+		QMessageBox::critical(nullptr, "Error", "No Camera Found!");
+		//return -1;
 	}
+
 
 	// connect camera to viewfinder
 	QMediaCaptureSession captureSession;
 	captureSession.setCamera(&camera);
-	captureSession.setVideoOutput(&viewfinder);
+	captureSession.setVideoOutput(&widget);
+
+	QVideoSink *sink = widget.videoSink();
+	QObject::connect(sink, &QVideoSink::videoFrameChanged, [](const QVideoFrame &frame) {});
 
 	camera.start();
 
