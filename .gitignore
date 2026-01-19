@@ -21,6 +21,10 @@ debug/*
 imgui/
 imgui/*
 
+opencv*
+opencv*/
+opencv*/*
+
 # Qt creator files
 .qtcreator/
 *.creator/
