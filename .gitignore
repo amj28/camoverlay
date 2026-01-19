@@ -18,6 +18,8 @@ Makefile.in
 camoverlay
 release/*
 debug/*
+imgui/
+imgui/*
 
 # Qt creator files
 .qtcreator/
