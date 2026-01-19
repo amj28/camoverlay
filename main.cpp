@@ -1,47 +1,27 @@
-#include <QApplication>
-#include <QMessageBox>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include "VideoFrameGrabber.h"
+
 #include <QIcon>
+#include <QMessageBox>
 
-#include <QCamera>
-#include <QCameraDevice>
-
-#include <QMediaCaptureSession>
-#include <QMediaDevices>
-
-#include <QVideoWidget>
-#include <QVideoSink>
 
 
 int main(int argc, char *argv[]) {
 
-	QApplication app(argc, argv);
-	QApplication::setApplicationName("CamOverlay");
+	QGuiApplication app(argc, argv);
+	QGuiApplication::setApplicationDisplayName("CamOverlay");
+	QGuiApplication::setDesktopFileName("CamOverlay");
+	QGuiApplication::setWindowIcon(QIcon("./video.svg"));
 
-	
-	QVideoWidget widget;
-	widget.setWindowIcon(QIcon("./video.svg"));
-	// widget.setWindowFlag(Qt::FramelessWindowHint); // removes frame but you cant drag/resize
-	widget.setAttribute(Qt::WA_TranslucentBackground);	
-	widget.show();
+	qmlRegisterType<VideoFrameGrabber>("VideoProcessing", 1, 0, "VideoFrameGrabber");
 
-	// get default camera
-	QCamera camera(QMediaDevices::defaultVideoInput());
-
-	if (camera.cameraDevice().isNull()) {
-		QMessageBox::critical(nullptr, "Error", "No Camera Found!");
-		//return -1;
+	QQmlApplicationEngine engine;
+	engine.load(QUrl(QStringLiteral("test.qml")));
+	if (engine.rootObjects().isEmpty()) {
+		return -1;
 	}
 
-
-	// connect camera to viewfinder
-	QMediaCaptureSession captureSession;
-	captureSession.setCamera(&camera);
-	captureSession.setVideoOutput(&widget);
-
-	QVideoSink *sink = widget.videoSink();
-	QObject::connect(sink, &QVideoSink::videoFrameChanged, [](const QVideoFrame &frame) {});
-
-	camera.start();
 
     	return app.exec();
 }
